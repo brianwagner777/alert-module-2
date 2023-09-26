@@ -10,7 +10,7 @@ variable "tags" {
 }
 
 variable "scheduled_query_alerts" {
-  type = list(object({ 
+  type = map(object({ 
     action_group_name       = string, 
     action_group_short_name = string
   }))
