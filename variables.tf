@@ -9,7 +9,7 @@ variable "tags" {
   default     = {}
 }
 
-variable "scheduled_query_alerts" {
+variable "query_alerts" {
   type = list(object({ 
     action_group_name                      = string, 
     action_group_short_name                = string,
