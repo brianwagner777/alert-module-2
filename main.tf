@@ -18,6 +18,7 @@ resource "azurerm_monitor_action_group" "action_group" {
 
 resource "azurerm_monitor_scheduled_query_rules_alert_v2" "alert_rule" {
   count               = length(var.scheduled_query_alerts)
+  name                = var.scheduled_query_alerts[count.index].alert_name
   location            = data.azurerm_resource_group.main.location
   resource_group_name = data.azurerm_resource_group.main.name
   description         = var.scheduled_query_alerts[count.index].alert_description
