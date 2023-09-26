@@ -7,7 +7,7 @@ resource "azurerm_monitor_action_group" "action_group" {
   tags                = var.tags
 
   dynamic "email_receiver" {
-    for_each = var.action_group_email_receivers
+    for_each = each.value.action_group_email_receivers
     content {
       name                    = email_receiver.value["name"]
       email_address           = email_receiver.value["email_address"]
