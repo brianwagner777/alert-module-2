@@ -29,20 +29,20 @@ variable "query_alerts" {
 
   description = <<EOT
     query_alert = {
-      action_group_name: ""
-      action_group_short_name: ""
-      action_group_email_receivers: ""
-      alert_name: ""
-      alert_description: ""
-      alert_enabled: ""
-      alert_evaluation_frequency: ""
-      alert_window_duration: ""
-      alert_severity: ""
-      alert_scope_resource_id: ""
-      alert_criteria_query: ""
-      alert_criteria_time_aggregation_method: ""
-      alert_criteria_threshold: ""
-      alert_criteria_operator: ""
+      action_group_name: "The name of the action group."
+      action_group_short_name: "The short name of the action group."
+      action_group_email_receivers: "List of email recipients for the alert."
+      alert_name: "The name of the alert."
+      alert_description: "The description of the alert rule."
+      alert_enabled: "Indicates whether the alert is enabled. Value should be true or false."
+      alert_evaluation_frequency: "How often the alert rule is evaluated, represented in ISO 8601 duration format."
+      alert_window_duration: "The period of time in ISO 8601 duration format on which the alert rule will be executed."
+      alert_severity: "Severity of the alert, an integer between 0 and 4, with 0 being the most severe."
+      alert_scope_resource_id: "The resource ID that the alert rule is scoped to."
+      alert_criteria_query: "The query to run on logs."
+      alert_criteria_time_aggregation_method: "The type of aggregation to apply to the data points in aggregation granularity. Possible values are Average, Count, Maximum, Minimum, and Total."
+      alert_criteria_threshold: "The criteria threshold value that activates the alert."
+      alert_criteria_operator: "The criteria operator. Possible values are Equal, GreaterThan, GreaterThanOrEqual, LessThan, and LessThanOrEqual."
     }
   EOT
 }
