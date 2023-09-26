@@ -11,7 +11,8 @@ variable "tags" {
 
 variable "scheduled_query_alerts" {
   type = list(object({ 
-    action_group_name       = string, 
-    action_group_short_name = string
+    action_group_name            = string, 
+    action_group_short_name      = string,
+    action_group_email_receivers = list(object({ name = string, email_address = string }))
   }))
 }
