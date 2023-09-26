@@ -25,6 +25,21 @@ resource "azurerm_monitor_scheduled_query_rules_alert_v2" "alert_rule" {
   display_name        = var.scheduled_query_alerts[count.index].alert_name
   tags                = var.tags
 
+  evaluation_frequency = var.scheduled_query_alerts[count.index].alert_evaluation_frequency
+  window_duration      = var.scheduled_query_alerts[count.index].alert_window_duration
+  scopes               = [var.scheduled_query_alerts[count.index].alert_scope_resource_id]
+  severity             = var.scheduled_query_alerts[count.index].alert_severity
+  criteria {
+    query                   = var.scheduled_query_alerts[count.index].alert_criteria_query
+    time_aggregation_method = var.scheduled_query_alerts[count.index].alert_criteria_time_aggregation_method
+    threshold               = var.scheduled_query_alerts[count.index].alert_criteria_threshold
+    operator                = var.scheduled_query_alerts[count.index].alert_criteria_operator
+    failing_periods {
+      minimum_failing_periods_to_trigger_alert = 1
+      number_of_evaluation_periods             = 1
+    }
+  }
+
   auto_mitigation_enabled          = false
   workspace_alerts_storage_enabled = false
   skip_query_validation            = true
