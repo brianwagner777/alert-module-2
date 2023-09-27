@@ -1,4 +1,4 @@
-# Create actions groups for query alerts
+# Create query alerts actions groups
 resource "azurerm_monitor_action_group" "query_alert_action_group" {
   count               = length(var.query_alerts)
   resource_group_name = data.azurerm_resource_group.main.name
@@ -16,7 +16,7 @@ resource "azurerm_monitor_action_group" "query_alert_action_group" {
   }
 }
 
-# Create rules for query alerts
+# Create query alerts rules
 resource "azurerm_monitor_scheduled_query_rules_alert_v2" "query_alert_rule" {
   count               = length(var.query_alerts)
   name                = var.query_alerts[count.index].alert_name
