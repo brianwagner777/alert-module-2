@@ -1,4 +1,4 @@
 output "query_alerts" {
   description = "Logic app with all attributes."
-  value       = azurerm_logic_app_standard.logic_app
+  value       = azurerm_monitor_scheduled_query_rules_alert_v2.query_alert_rule
 }
