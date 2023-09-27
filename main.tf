@@ -55,3 +55,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert_v2" "query_alert_rule" {
     ]
   }
 }
+
+# Future
+# Metrics alerts: azurerm_monitor_metric_alert
+# Activity alerts: azurerm_monitor_activity_log_alert
