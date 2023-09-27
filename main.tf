@@ -1,5 +1,5 @@
 # Create query alerts actions groups
-resource "azurerm_monitor_action_group" "query_alert_action_group" {
+resource "azurerm_monitor_action_group" "query_alert_action_groups" {
   count               = length(var.query_alerts)
   resource_group_name = data.azurerm_resource_group.main.name
   name                = var.query_alerts[count.index].action_group_name
@@ -17,7 +17,7 @@ resource "azurerm_monitor_action_group" "query_alert_action_group" {
 }
 
 # Create query alerts rules
-resource "azurerm_monitor_scheduled_query_rules_alert_v2" "query_alert_rule" {
+resource "azurerm_monitor_scheduled_query_rules_alert_v2" "query_alert_rules" {
   count               = length(var.query_alerts)
   name                = var.query_alerts[count.index].alert_name
   location            = data.azurerm_resource_group.main.location
@@ -46,7 +46,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert_v2" "query_alert_rule" {
   workspace_alerts_storage_enabled = false
   skip_query_validation            = true
   action {
-    action_groups = [azurerm_monitor_action_group.query_alert_action_group[count.index].id]
+    action_groups = [azurerm_monitor_action_group.query_alert_action_groups[count.index].id]
   }
 
   lifecycle {
