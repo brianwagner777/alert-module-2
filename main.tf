@@ -1,7 +1,7 @@
 # Create query alerts actions groups
 resource "azurerm_monitor_action_group" "query_alert_action_groups" {
   count               = length(var.query_alerts)
-  resource_group_name = data.azurerm_resource_group.main.name
+  resource_group_name = var.resource_group_name
   name                = var.query_alerts[count.index].action_group_name
   short_name          = substr(var.query_alerts[count.index].action_group_short_name, 0, 12)
   tags                = var.tags
@@ -20,8 +20,8 @@ resource "azurerm_monitor_action_group" "query_alert_action_groups" {
 resource "azurerm_monitor_scheduled_query_rules_alert_v2" "query_alert_rules" {
   count               = length(var.query_alerts)
   name                = var.query_alerts[count.index].alert_name
-  location            = data.azurerm_resource_group.main.location
-  resource_group_name = data.azurerm_resource_group.main.name
+  location            = var.location
+  resource_group_name = var.resource_group_name
   description         = var.query_alerts[count.index].alert_description
   enabled             = var.query_alerts[count.index].alert_enabled
   display_name        = var.query_alerts[count.index].alert_name
