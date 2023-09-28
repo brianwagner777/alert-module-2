@@ -51,8 +51,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert_v2" "query_alert_rules" {
     resource_id_column      = var.query_alerts[count.index].rule.criteria.resource_id_column
 
     failing_periods {
-      minimum_failing_periods_to_trigger_alert = var.query_alerts[count.index].rule.criteria_minimum_failing_periods_to_trigger_alert
-      number_of_evaluation_periods             = var.query_alerts[count.index].rule.criteria_number_of_evaluation_periods
+      minimum_failing_periods_to_trigger_alert = var.query_alerts[count.index].rule.criteria.minimum_failing_periods_to_trigger_alert
+      number_of_evaluation_periods             = var.query_alerts[count.index].rule.criteria.number_of_evaluation_periods
     }
   }
 
