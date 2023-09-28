@@ -16,21 +16,35 @@ variable "tags" {
 
 variable "query_alerts" {
   type = list(object({
-    action_group_name                     = string,
-    action_group_short_name               = string,
-    action_group_email_receivers          = list(object({ name = string, email_address = string })),
-    
-    rule_name                             = string,
-    rule_description                      = string,
-    rule_enabled                          = bool,
-    rule_evaluation_frequency             = string,
-    rule_window_duration                  = string,
-    rule_severity                         = number,
-    rule_scope_resource_ids               = set(string),
-    rule_criteria_query                   = string,
-    rule_criteria_time_aggregation_method = string,
-    rule_criteria_threshold               = number,
-    rule_criteria_operator                = string
+    action_group = object({
+      name            = string,
+      short_name      = string,
+      email_receivers = list(object({ name = string, email_address = string })),
+    }),
+    rule = object({
+      name                              = string,
+      description                       = optional(string),
+      enabled                           = bool,
+      evaluation_frequency              = string,
+      scopes                            = set(string),
+      severity                          = number,
+      window_duration                   = string,
+      auto_mitigation_enabled           = optional(bool, false),
+      workspace_alerts_storage_enabled  = optional(bool, false),
+      mute_actions_after_alert_duration = optional(string),
+      query_time_range_override         = optional(string),
+      skip_query_validation             = optional(bool, false),
+      target_resource_types             = optional(set(string)),
+
+      criteria_operator                                 = string,
+      criteria_query                                    = string,
+      criteria_threshold                                = number,
+      criteria_time_aggregation_method                  = string,
+      criteria_metric_measure_column                    = optional(string),
+      criteria_resource_id_column                       = optional(string),
+      criteria_minimum_failing_periods_to_trigger_alert = number,
+      criteria_number_of_evaluation_periods             = number
+    })
   }))
 
   description = <<EOT
@@ -45,7 +59,7 @@ variable "query_alerts" {
       rule_evaluation_frequency: "How often the alert rule is evaluated, represented in ISO 8601 duration format."
       rule_window_duration: "The period of time in ISO 8601 duration format on which the alert rule will be executed."
       rule_severity: "Severity of the alert, an integer between 0 and 4, with 0 being the most severe."
-      rule_scope_resource_id: "The resource ID that the alert rule is scoped to."
+      rule_scopes: "A set of resource IDs that the alert rule is scoped to."
       rule_criteria_query: "The query to run on logs."
       rule_criteria_time_aggregation_method: "The type of aggregation to apply to the data points in aggregation granularity. Possible values are Average, Count, Maximum, Minimum, and Total."
       rule_criteria_threshold: "The criteria threshold value that activates the alert."
