@@ -15,17 +15,18 @@ variable "tags" {
 }
 
 variable "query_alerts" {
-  type = list(object({ 
-    action_group_name                      = string, 
-    action_group_short_name                = string,
-    action_group_email_receivers           = list(object({ name = string, email_address = string })),
+  type = list(object({
+    action_group_name                     = string,
+    action_group_short_name               = string,
+    action_group_email_receivers          = list(object({ name = string, email_address = string })),
+    
     rule_name                             = string,
     rule_description                      = string,
     rule_enabled                          = bool,
     rule_evaluation_frequency             = string,
     rule_window_duration                  = string,
     rule_severity                         = number,
-    rule_scope_resource_id                = string,
+    rule_scope_resource_ids               = set(string),
     rule_criteria_query                   = string,
     rule_criteria_time_aggregation_method = string,
     rule_criteria_threshold               = number,
