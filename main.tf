@@ -43,12 +43,12 @@ resource "azurerm_monitor_scheduled_query_rules_alert_v2" "query_alert_rules" {
   }
 
   criteria {
-    operator                = var.query_alerts[count.index].rule.criteria_operator
-    query                   = var.query_alerts[count.index].rule.criteria_query
-    threshold               = var.query_alerts[count.index].rule.criteria_threshold
-    time_aggregation_method = var.query_alerts[count.index].rule.criteria_time_aggregation_method
-    metric_measure_column   = var.query_alerts[count.index].rule.criteria_metric_measure_column
-    resource_id_column      = var.query_alerts[count.index].rule.criteria_resource_id_column
+    operator                = var.query_alerts[count.index].rule.criteria.operator
+    query                   = var.query_alerts[count.index].rule.criteria.query
+    threshold               = var.query_alerts[count.index].rule.criteria.threshold
+    time_aggregation_method = var.query_alerts[count.index].rule.criteria.time_aggregation_method
+    metric_measure_column   = var.query_alerts[count.index].rule.criteria.metric_measure_column
+    resource_id_column      = var.query_alerts[count.index].rule.criteria.resource_id_column
 
     failing_periods {
       minimum_failing_periods_to_trigger_alert = var.query_alerts[count.index].rule.criteria_minimum_failing_periods_to_trigger_alert
