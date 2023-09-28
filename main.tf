@@ -16,7 +16,7 @@ resource "azurerm_monitor_action_group" "query_alert_action_groups" {
   }
 }
 
-# Create query alert rules
+# Create query alerts rules
 resource "azurerm_monitor_scheduled_query_rules_alert_v2" "query_alert_rules" {
   count               = length(var.query_alerts)
   name                = var.query_alerts[count.index].alert_name
