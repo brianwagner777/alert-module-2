@@ -29,7 +29,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert_v2" "query_alert_rules" {
 
   evaluation_frequency = var.query_alerts[count.index].rule_evaluation_frequency
   window_duration      = var.query_alerts[count.index].rule_window_duration
-  scopes               = [var.query_alerts[count.index].rule_scope_resource_id]
+  scopes               = var.query_alerts[count.index].rule_scope_resource_ids
   severity             = var.query_alerts[count.index].rule_severity
   criteria {
     query                   = var.query_alerts[count.index].rule_criteria_query
