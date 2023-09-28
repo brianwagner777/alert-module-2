@@ -19,23 +19,23 @@ resource "azurerm_monitor_action_group" "query_alert_action_groups" {
 # Create query alerts rules
 resource "azurerm_monitor_scheduled_query_rules_alert_v2" "query_alert_rules" {
   count               = length(var.query_alerts)
-  name                = var.query_alerts[count.index].alert_name
+  name                = var.query_alerts[count.index].rule_name
   location            = var.location
   resource_group_name = var.resource_group_name
-  description         = var.query_alerts[count.index].alert_description
-  enabled             = var.query_alerts[count.index].alert_enabled
-  display_name        = var.query_alerts[count.index].alert_name
+  description         = var.query_alerts[count.index].rule_description
+  enabled             = var.query_alerts[count.index].rule_enabled
+  display_name        = var.query_alerts[count.index].rule_name
   tags                = var.tags
 
-  evaluation_frequency = var.query_alerts[count.index].alert_evaluation_frequency
-  window_duration      = var.query_alerts[count.index].alert_window_duration
-  scopes               = [var.query_alerts[count.index].alert_scope_resource_id]
-  severity             = var.query_alerts[count.index].alert_severity
+  evaluation_frequency = var.query_alerts[count.index].rule_evaluation_frequency
+  window_duration      = var.query_alerts[count.index].rule_window_duration
+  scopes               = [var.query_alerts[count.index].rule_scope_resource_id]
+  severity             = var.query_alerts[count.index].rule_severity
   criteria {
-    query                   = var.query_alerts[count.index].alert_criteria_query
-    time_aggregation_method = var.query_alerts[count.index].alert_criteria_time_aggregation_method
-    threshold               = var.query_alerts[count.index].alert_criteria_threshold
-    operator                = var.query_alerts[count.index].alert_criteria_operator
+    query                   = var.query_alerts[count.index].rule_criteria_query
+    time_aggregation_method = var.query_alerts[count.index].rule_criteria_time_aggregation_method
+    threshold               = var.query_alerts[count.index].rule_criteria_threshold
+    operator                = var.query_alerts[count.index].rule_criteria_operator
     failing_periods {
       minimum_failing_periods_to_trigger_alert = 1
       number_of_evaluation_periods             = 1
