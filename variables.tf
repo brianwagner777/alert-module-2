@@ -21,6 +21,7 @@ variable "query_alerts" {
       short_name      = string,
       email_receivers = list(object({ name = string, email_address = string })),
     }),
+
     rule = object({
       name                              = string,
       description                       = optional(string),
@@ -42,8 +43,8 @@ variable "query_alerts" {
       criteria_time_aggregation_method                  = string,
       criteria_metric_measure_column                    = optional(string),
       criteria_resource_id_column                       = optional(string),
-      criteria_minimum_failing_periods_to_trigger_alert = number,
-      criteria_number_of_evaluation_periods             = number
+      criteria_minimum_failing_periods_to_trigger_alert = optional(number, 1),
+      criteria_number_of_evaluation_periods             = optional(number, 1)
     })
   }))
 
