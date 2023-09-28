@@ -39,7 +39,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert_v2" "query_alert_rules" {
   target_resource_types             = var.query_alerts[count.index].rule.target_resource_types
 
   action {
-    action_groups = [azurerm_monitor_action_group.query_alert_action_groups[count.index].id]
+    action_groups     = [azurerm_monitor_action_group.query_alert_action_groups[count.index].id]
+    custom_properties = var.query_alerts[count.index].rule.action_custom_properties
   }
 
   criteria {
