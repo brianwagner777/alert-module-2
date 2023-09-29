@@ -37,7 +37,6 @@ resource "azurerm_monitor_scheduled_query_rules_alert_v2" "query_alert_rules" {
   query_time_range_override         = var.query_alerts[count.index].rule.query_time_range_override
   skip_query_validation             = var.query_alerts[count.index].rule.skip_query_validation
   target_resource_types             = var.query_alerts[count.index].rule.target_resource_types
-  criteria                          = var.query_alerts[count.index].rule.criteria
 
   action {
     action_groups     = [azurerm_monitor_action_group.query_alert_action_groups[count.index].id]
