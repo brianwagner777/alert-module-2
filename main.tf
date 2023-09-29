@@ -124,7 +124,7 @@ resource "azurerm_monitor_metric_alert" "metric_alert_rules" {
       aggregation            = var.metric_alerts[count.index].rule.criteria.aggregation
       operator               = var.metric_alerts[count.index].rule.criteria.operator
       threshold              = var.metric_alerts[count.index].rule.criteria.threshold
-      skip_metric_evaluation = var.metric_alerts[count.index].rule.criteria.skip_metric_evaluation
+      skip_metric_validation = var.metric_alerts[count.index].rule.criteria.skip_metric_validation
 
       dynamic "dimension" {
         for_each = var.metric_alerts[count.index].rule.criteria.dimension[*]
