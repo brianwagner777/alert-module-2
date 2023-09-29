@@ -75,3 +75,95 @@ resource "azurerm_monitor_scheduled_query_rules_alert_v2" "query_alert_rules" {
     ]
   }
 }
+
+# Create metric alerts actions groups
+resource "azurerm_monitor_action_group" "metric_alert_action_groups" {
+  count               = length(var.metric_alerts)
+  resource_group_name = var.resource_group_name
+  name                = var.metric_alerts[count.index].action_group.name
+  short_name          = substr(var.metric_alerts[count.index].action_group.short_name, 0, 12)
+  tags                = var.tags
+
+  dynamic "email_receiver" {
+    for_each = var.metric_alerts[count.index].action_group.email_receivers
+    content {
+      name                    = email_receiver.value["name"]
+      email_address           = email_receiver.value["email_address"]
+      use_common_alert_schema = true
+    }
+  }
+}
+
+# Create metric alerts rules
+resource "azurerm_monitor_metric_alert" "metric_alert_rules" {
+  count               = length(var.metric_alerts)
+  name                = var.metric_alerts[count.index].rule.name
+  resource_group_name = var.resource_group_name
+  description         = var.metric_alerts[count.index].rule.description
+  enabled             = var.metric_alerts[count.index].rule.enabled
+  tags                = var.tags
+
+  scopes                   = var.metric_alerts[count.index].rule.scopes
+  auto_mitigate            = var.metric_alerts[count.index].rule.auto_mitigate
+  frequency                = var.metric_alerts[count.index].rule.frequency
+  severity                 = var.metric_alerts[count.index].rule.severity
+  target_resource_type     = var.metric_alerts[count.index].rule.target_resource_type
+  target_resource_location = var.metric_alerts[count.index].rule.target_resource_location
+  window_size              = var.metric_alerts[count.index].rule.window_size
+
+  action {
+    action_groups      = [azurerm_monitor_action_group.metric_alert_action_groups[count.index].id]
+    webhook_properties = var.metric_alerts[count.index].rule.action_webhook_properties
+  }
+
+  dynamic "criteria" {
+    for_each = var.metric_alerts[count.index].rule.criteria[*]
+    content {
+      metric_namespace       = var.metric_alerts[count.index].rule.criteria.metric_namespace
+      metric_name            = var.metric_alerts[count.index].rule.criteria.metric_name
+      aggregation            = var.metric_alerts[count.index].rule.criteria.aggregation
+      operator               = var.metric_alerts[count.index].rule.criteria.operator
+      threshold              = var.metric_alerts[count.index].rule.criteria.threshold
+      skip_metric_evaluation = var.metric_alerts[count.index].rule.criteria.skip_metric_evaluation
+
+      dynamic "dimension" {
+        for_each = var.metric_alerts[count.index].rule.criteria.dimension[*]
+        content {
+          name     = var.metric_alerts[count.index].rule.criteria.dimension.name
+          operator = var.metric_alerts[count.index].rule.criteria.dimension.operator
+          values   = var.metric_alerts[count.index].rule.criteria.dimension.values
+        }
+      }
+    }
+  }
+
+  dynamic "dynamic_criteria" {
+    for_each = var.metric_alerts[count.index].rule.dynamic_criteria[*]
+    content {
+      metric_namespace         = var.metric_alerts[count.index].rule.dynamic_criteria.metric_namespace
+      metric_name              = var.metric_alerts[count.index].rule.dynamic_criteria.metric_name
+      aggregation              = var.metric_alerts[count.index].rule.dynamic_criteria.aggregation
+      operator                 = var.metric_alerts[count.index].rule.dynamic_criteria.operator
+      alert_sensitivity        = var.metric_alerts[count.index].rule.dynamic_criteria.alert_sensitivity
+      evaluation_total_count   = var.metric_alerts[count.index].rule.dynamic_criteria.evaluation_total_count
+      evaluation_failure_count = var.metric_alerts[count.index].rule.dynamic_criteria.evaluation_failure_count
+      ignore_data_before       = var.metric_alerts[count.index].rule.dynamic_criteria.ignore_data_before
+      skip_metric_evaluation   = var.metric_alerts[count.index].rule.dynamic_criteria.skip_metric_evaluation
+
+      dynamic "dimension" {
+        for_each = var.metric_alerts[count.index].rule.dynamic_criteria.dimension[*]
+        content {
+          name     = var.metric_alerts[count.index].rule.dynamic_criteria.dimension.name
+          operator = var.metric_alerts[count.index].rule.dynamic_criteria.dimension.operator
+          values   = var.metric_alerts[count.index].rule.dynamic_criteria.dimension.values
+        }
+      }
+    }
+  }
+
+  lifecycle {
+    ignore_changes = [
+      enabled
+    ]
+  }
+}
