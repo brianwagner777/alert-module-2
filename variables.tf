@@ -139,7 +139,7 @@ variable "metric_alerts" {
         aggregation            = string,
         operator               = string,
         threshold              = number,
-        skip_metric_evaluation = optional(bool, false),
+        skip_metric_validation = optional(bool, false),
 
         dimension = optional(object({
           name     = string,
