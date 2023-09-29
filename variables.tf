@@ -52,7 +52,7 @@ variable "query_alerts" {
           values   = set(string)
         })),
 
-        falling_periods = optional(object({
+        failing_periods = optional(object({
           minimum_failing_periods_to_trigger_alert = optional(number, 1),
           number_of_evaluation_periods             = optional(number, 1)
         }))
