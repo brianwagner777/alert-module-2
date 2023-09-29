@@ -112,7 +112,7 @@ resource "azurerm_monitor_metric_alert" "metric_alert_rules" {
   window_size              = var.metric_alerts[count.index].rule.window_size
 
   action {
-    action_groups      = [azurerm_monitor_action_group.metric_alert_action_groups[count.index].id]
+    action_group_id    = azurerm_monitor_action_group.metric_alert_action_groups[count.index].id
     webhook_properties = var.metric_alerts[count.index].rule.action_webhook_properties
   }
 
