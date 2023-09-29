@@ -157,7 +157,7 @@ variable "metric_alerts" {
         evaluation_total_count   = number,
         evaluation_failure_count = number,
         ignore_data_before       = optional(string),
-        skip_metric_evaluation   = optional(bool, false),
+        skip_metric_validation   = optional(bool, false),
 
         dimension = optional(object({
           name     = string,
