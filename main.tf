@@ -148,7 +148,7 @@ resource "azurerm_monitor_metric_alert" "metric_alert_rules" {
       evaluation_total_count   = var.metric_alerts[count.index].rule.dynamic_criteria.evaluation_total_count
       evaluation_failure_count = var.metric_alerts[count.index].rule.dynamic_criteria.evaluation_failure_count
       ignore_data_before       = var.metric_alerts[count.index].rule.dynamic_criteria.ignore_data_before
-      skip_metric_evaluation   = var.metric_alerts[count.index].rule.dynamic_criteria.skip_metric_evaluation
+      skip_metric_validation   = var.metric_alerts[count.index].rule.dynamic_criteria.skip_metric_validation
 
       dynamic "dimension" {
         for_each = var.metric_alerts[count.index].rule.dynamic_criteria.dimension[*]
