@@ -60,6 +60,7 @@ variable "query_alerts" {
     })
   }))
 
+  default     = []
   description = <<EOT
     Deploys one or more query (log) alerts in Azure Monitor. An alert rule and action group will be created for each alert in the list.
     The alert rule is created using the azurerm_monitor_scheduled_query_rules_alert_v2 resource.
@@ -167,6 +168,7 @@ variable "metric_alerts" {
     })
   }))
 
+  default     = []
   description = <<EOT
     Deploys one or more metric alerts in Azure Monitor. An alert rule and action group will be created for each alert in the list.
     The alert rule is created using the azurerm_monitor_metric_alert resource.
