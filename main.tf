@@ -39,9 +39,10 @@ resource "azurerm_monitor_scheduled_query_rules_alert_v2" "query_alert_rules" {
   target_resource_types             = var.query_alert_rules[count.index].target_resource_types
 
   # https://build5nines.com/terraform-expression-get-list-object-by-attribute-value-lookup/
+  # https://dev.to/pwd9000/terraform-filter-results-using-for-loops-4n75
 
   action {
-    action_groups     = toset([for each in azurerm_monitor_action_group.action_groups : each.id if each.name == var.query_alert_rules[count.index].action_group_name])
+    action_groups     = toset([for each in azurerm_monitor_action_group.action_groups : each.id if contains(var.query_alert_rules[count.index].action_group_names, each.name)])
     custom_properties = var.query_alert_rules[count.index].action_custom_properties
   }
 
