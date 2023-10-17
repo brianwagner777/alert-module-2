@@ -47,6 +47,7 @@ variable "query_alert_rules" {
       query_time_range_override         = optional(string),
       skip_query_validation             = optional(bool, false),
       target_resource_types             = optional(set(string)),
+      action_group_name                 = string,
       action_custom_properties          = optional(map(string)),
 
       criteria = object({
