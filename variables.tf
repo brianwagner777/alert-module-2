@@ -90,6 +90,7 @@ variable "query_alert_rules" {
       query_time_range_override         : "Set this if the alert evaluation period is different from the query time range."
       skip_query_validation             : "Indicates whether the provided query should be validated or not."
       target_resource_types             : "List of resource types of the target resource(s) on which the alert is created/updated."
+      action_group_name                 : "The name of the action group"
       action_custom_properties          : "Specifies the properties of an alert payload."
 
       criteria = {
