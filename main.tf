@@ -1,6 +1,7 @@
 # Create actions groups
+# https://stackoverflow.com/questions/58594506/how-to-for-each-through-a-listobjects-in-terraform-0-12
 resource "azurerm_monitor_action_group" "action_groups" {
-  for_each            = var.action_groups
+  for_each            = { for index, ag in var.action_groups : ag.name => ag }
   resource_group_name = var.resource_group_name
   name                = each.value.name
   short_name          = substr(each.value.short_name, 0, 12)
