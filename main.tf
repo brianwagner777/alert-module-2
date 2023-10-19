@@ -17,9 +17,9 @@ resource "azurerm_monitor_action_group" "action_groups" {
   }
 }
 
-# Create query alerts rules
+# Create query (log) alerts rules
 resource "azurerm_monitor_scheduled_query_rules_alert_v2" "query_alert_rules" {
-  for_each            = { for idx, ar in var.query_alert_rules : ar.name => ar }
+  for_each            = { for idx, qar in var.query_alert_rules : qar.name => qar }
   name                = each.value.name
   location            = var.location
   resource_group_name = var.resource_group_name
@@ -69,6 +69,82 @@ resource "azurerm_monitor_scheduled_query_rules_alert_v2" "query_alert_rules" {
       content {
         minimum_failing_periods_to_trigger_alert = each.value.criteria.failing_periods.minimum_failing_periods_to_trigger_alert
         number_of_evaluation_periods             = each.value.criteria.failing_periods.number_of_evaluation_periods
+      }
+    }
+  }
+
+  lifecycle {
+    ignore_changes = [
+      enabled
+    ]
+  }
+}
+
+# Create metric alert rules
+resource "azurerm_monitor_metric_alert" "metric_alert_rules" {
+  count = length(var.metric_alerts)
+
+  for_each            = { for idx, mar in var.metric_alert_rules : mar.name => mar }
+  name                = each.value.rule.name
+  resource_group_name = var.resource_group_name
+  description         = each.value.rule.description
+  enabled             = each.value.rule.enabled
+  tags                = var.tags
+
+  scopes                   = each.value.rule.scopes
+  auto_mitigate            = each.value.rule.auto_mitigate
+  frequency                = each.value.rule.frequency
+  severity                 = each.value.rule.severity
+  target_resource_type     = each.value.rule.target_resource_type
+  target_resource_location = each.value.rule.target_resource_location
+  window_size              = each.value.rule.window_size
+
+  action {
+    action_group_id    = toset([for ag in azurerm_monitor_action_group.action_groups : ag.id if each.value.action_group_names == ag.name])[0]
+    webhook_properties = each.value.rule.action_webhook_properties
+  }
+
+  dynamic "criteria" {
+    for_each = each.value.rule.criteria[*]
+    content {
+      metric_namespace       = each.value.rule.criteria.metric_namespace
+      metric_name            = each.value.rule.criteria.metric_name
+      aggregation            = each.value.rule.criteria.aggregation
+      operator               = each.value.rule.criteria.operator
+      threshold              = each.value.rule.criteria.threshold
+      skip_metric_validation = each.value.rule.criteria.skip_metric_validation
+
+      dynamic "dimension" {
+        for_each = each.value.rule.criteria.dimension[*]
+        content {
+          name     = each.value.rule.criteria.dimension.name
+          operator = each.value.rule.criteria.dimension.operator
+          values   = each.value.rule.criteria.dimension.values
+        }
+      }
+    }
+  }
+
+  dynamic "dynamic_criteria" {
+    for_each = each.value.rule.dynamic_criteria[*]
+    content {
+      metric_namespace         = each.value.rule.dynamic_criteria.metric_namespace
+      metric_name              = each.value.rule.dynamic_criteria.metric_name
+      aggregation              = each.value.rule.dynamic_criteria.aggregation
+      operator                 = each.value.rule.dynamic_criteria.operator
+      alert_sensitivity        = each.value.rule.dynamic_criteria.alert_sensitivity
+      evaluation_total_count   = each.value.rule.dynamic_criteria.evaluation_total_count
+      evaluation_failure_count = each.value.rule.dynamic_criteria.evaluation_failure_count
+      ignore_data_before       = each.value.rule.dynamic_criteria.ignore_data_before
+      skip_metric_validation   = each.value.rule.dynamic_criteria.skip_metric_validation
+
+      dynamic "dimension" {
+        for_each = each.value.rule.dynamic_criteria.dimension[*]
+        content {
+          name     = each.value.rule.dynamic_criteria.dimension.name
+          operator = each.value.rule.dynamic_criteria.dimension.operator
+          values   = each.value.rule.dynamic_criteria.dimension.values
+        }
       }
     }
   }
