@@ -1,13 +1,13 @@
 # Create actions groups
 resource "azurerm_monitor_action_group" "action_groups" {
-  count               = length(var.action_groups)
+  for_each            = var.action_groups
   resource_group_name = var.resource_group_name
-  name                = var.action_groups[count.index].name
-  short_name          = substr(var.action_groups[count.index].short_name, 0, 12)
+  name                = each.value.name
+  short_name          = substr(each.value.short_name, 0, 12)
   tags                = var.tags
 
   dynamic "email_receiver" {
-    for_each = var.action_groups[count.index].email_receivers
+    for_each = each.value.email_receivers
     content {
       name                    = email_receiver.value["name"]
       email_address           = email_receiver.value["email_address"]
