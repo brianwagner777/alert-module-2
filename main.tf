@@ -82,8 +82,6 @@ resource "azurerm_monitor_scheduled_query_rules_alert_v2" "query_alert_rules" {
 
 # Create metric alert rules
 resource "azurerm_monitor_metric_alert" "metric_alert_rules" {
-  count = length(var.metric_alerts)
-
   for_each            = { for idx, mar in var.metric_alert_rules : mar.name => mar }
   name                = each.value.rule.name
   resource_group_name = var.resource_group_name
@@ -100,7 +98,7 @@ resource "azurerm_monitor_metric_alert" "metric_alert_rules" {
   window_size              = each.value.rule.window_size
 
   action {
-    action_group_id    = toset([for ag in azurerm_monitor_action_group.action_groups : ag.id if each.value.action_group_names == ag.name])[0]
+    action_group_id    = toset([for ag in azurerm_monitor_action_group.action_groups : ag.id if each.value.action_group_names = ag.name])[0]
     webhook_properties = each.value.rule.action_webhook_properties
   }
 
