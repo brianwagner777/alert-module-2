@@ -98,7 +98,7 @@ resource "azurerm_monitor_metric_alert" "metric_alert_rules" {
   window_size              = each.value.rule.window_size
 
   action {
-    action_group_id    = toset([for ag in azurerm_monitor_action_group.action_groups : ag.id if each.value.action_group_names == ag.name])[0]
+    action_group_id    = [for ag in azurerm_monitor_action_group.action_groups : ag.id if each.value.action_group_name == ag.name][0]
     webhook_properties = each.value.rule.action_webhook_properties
   }
 
