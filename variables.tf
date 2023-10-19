@@ -128,6 +128,7 @@ variable "metric_alert_rules" {
     target_resource_type      = optional(string),
     target_resource_location  = string,
     window_size               = string,
+    action_group_names        = set(string),
     action_webhook_properties = optional(map(string)),
 
     criteria = optional(object({
