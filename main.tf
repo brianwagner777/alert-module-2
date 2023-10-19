@@ -43,7 +43,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert_v2" "query_alert_rules" {
   # https://dev.to/pwd9000/terraform-filter-results-using-for-loops-4n75
 
   action {
-    action_groups     = toset([for each in azurerm_monitor_action_group.action_groups : each.id if contains(each.value.action_group_names, each.name)])
+    action_groups     = toset([for ag in azurerm_monitor_action_group.action_groups : ag.id if contains(each.value.action_group_names, ag.name)])
     custom_properties = each.value.action_custom_properties
   }
 
