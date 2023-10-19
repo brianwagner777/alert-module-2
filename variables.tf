@@ -16,13 +16,13 @@ variable "tags" {
 
 variable "action_groups" {
   type = list(object({
-      name            = string,
-      short_name      = string,
-      email_receivers = list(object({ name = string, email_address = string }))
-  })) 
+    name            = string,
+    short_name      = string,
+    email_receivers = list(object({ name = string, email_address = string }))
+  }))
   default     = []
   description = <<EOT
-    Deploys one or more actions groups in Azure Monitor.
+    Deploys actions groups to Azure Monitor.
 
     action_group = {
       name            : "The name of the action group."
@@ -34,47 +34,47 @@ variable "action_groups" {
 
 variable "query_alert_rules" {
   type = list(object({
-      name                              = string,
-      description                       = optional(string),
-      enabled                           = bool,
-      evaluation_frequency              = string,
-      scope                             = string,
-      severity                          = number,
-      window_duration                   = string,
-      auto_mitigation_enabled           = optional(bool, false),
-      workspace_alerts_storage_enabled  = optional(bool, false),
-      mute_actions_after_alert_duration = optional(string),
-      query_time_range_override         = optional(string),
-      skip_query_validation             = optional(bool, false),
-      target_resource_types             = optional(set(string)),
-      action_group_names                = set(string),
-      action_custom_properties          = optional(map(string)),
+    name                              = string,
+    description                       = optional(string),
+    enabled                           = bool,
+    evaluation_frequency              = string,
+    scope                             = string,
+    severity                          = number,
+    window_duration                   = string,
+    auto_mitigation_enabled           = optional(bool, false),
+    workspace_alerts_storage_enabled  = optional(bool, false),
+    mute_actions_after_alert_duration = optional(string),
+    query_time_range_override         = optional(string),
+    skip_query_validation             = optional(bool, false),
+    target_resource_types             = optional(set(string)),
+    action_group_names                = set(string),
+    action_custom_properties          = optional(map(string)),
 
-      criteria = object({
-        operator                = string,
-        query                   = string,
-        threshold               = number,
-        time_aggregation_method = string,
-        metric_measure_column   = optional(string),
-        resource_id_column      = optional(string),
+    criteria = object({
+      operator                = string,
+      query                   = string,
+      threshold               = number,
+      time_aggregation_method = string,
+      metric_measure_column   = optional(string),
+      resource_id_column      = optional(string),
 
-        dimension = optional(object({
-          name     = string,
-          operator = string,
-          values   = set(string)
-        })),
+      dimension = optional(object({
+        name     = string,
+        operator = string,
+        values   = set(string)
+      })),
 
-        failing_periods = optional(object({
-          minimum_failing_periods_to_trigger_alert = number,
-          number_of_evaluation_periods             = number
-        }))
-      })
+      failing_periods = optional(object({
+        minimum_failing_periods_to_trigger_alert = number,
+        number_of_evaluation_periods             = number
+      }))
+    })
     })
   )
 
   default     = []
   description = <<EOT
-    Deploys one or more query (log) alerts in Azure Monitor. The alert rule is created using the azurerm_monitor_scheduled_query_rules_alert_v2 resource.
+    Deploys query (log) alerts to Azure Monitor. The alert rule is provisioned using azurerm_monitor_scheduled_query_rules_alert_v2.
 
     query_alert_rule = {
       name                              : "The name of the query alert rule."
@@ -166,7 +166,7 @@ variable "metric_alert_rules" {
 
   default     = []
   description = <<EOT
-    Deploys one or more metric alerts in Azure Monitor. The alert rule is created using the azurerm_monitor_metric_alert resource.
+    Deploys metric alerts to Azure Monitor. The alert rule is provisioned using azurerm_monitor_metric_alert.
 
     metric_alert_rule = {
       name                      : "The name of the metric alert rule."
