@@ -1,14 +1,13 @@
 # Create actions groups
-# https://stackoverflow.com/questions/58594506/how-to-for-each-through-a-listobjects-in-terraform-0-12
 resource "azurerm_monitor_action_group" "action_groups" {
-  for_each            = { for idx, ag in var.action_groups : ag.name => ag }
+  count               = length(var.action_groups)
   resource_group_name = var.resource_group_name
-  name                = each.value.name
-  short_name          = substr(each.value.short_name, 0, 12)
+  name                = var.action_groups[count.index].name
+  short_name          = substr(var.action_groups[count.index].short_name, 0, 12)
   tags                = var.tags
 
   dynamic "email_receiver" {
-    for_each = each.value.email_receivers
+    for_each = var.action_groups[count.index].email_receivers
     content {
       name                    = email_receiver.value["name"]
       email_address           = email_receiver.value["email_address"]
@@ -19,56 +18,56 @@ resource "azurerm_monitor_action_group" "action_groups" {
 
 # Create query alerts rules
 resource "azurerm_monitor_scheduled_query_rules_alert_v2" "query_alert_rules" {
-  for_each            = { for idx, ar in var.query_alert_rules : ar.name => ar }
-  name                = each.value.name
+  count               = length(var.query_alert_rules)
+  name                = var.query_alert_rules[count.index].name
   location            = var.location
   resource_group_name = var.resource_group_name
-  description         = each.value.description
-  enabled             = each.value.enabled
-  display_name        = each.value.name
+  description         = var.query_alert_rules[count.index].description
+  enabled             = var.query_alert_rules[count.index].enabled
+  display_name        = var.query_alert_rules[count.index].name
   tags                = var.tags
 
-  evaluation_frequency              = each.value.evaluation_frequency
-  scopes                            = [each.value.scope]
-  severity                          = each.value.severity
-  window_duration                   = each.value.window_duration
-  auto_mitigation_enabled           = each.value.auto_mitigation_enabled
-  workspace_alerts_storage_enabled  = each.value.workspace_alerts_storage_enabled
-  mute_actions_after_alert_duration = each.value.mute_actions_after_alert_duration
-  query_time_range_override         = each.value.query_time_range_override
-  skip_query_validation             = each.value.skip_query_validation
-  target_resource_types             = each.value.target_resource_types
+  evaluation_frequency              = var.query_alert_rules[count.index].evaluation_frequency
+  scopes                            = [var.query_alert_rules[count.index].scope]
+  severity                          = var.query_alert_rules[count.index].severity
+  window_duration                   = var.query_alert_rules[count.index].window_duration
+  auto_mitigation_enabled           = var.query_alert_rules[count.index].auto_mitigation_enabled
+  workspace_alerts_storage_enabled  = var.query_alert_rules[count.index].workspace_alerts_storage_enabled
+  mute_actions_after_alert_duration = var.query_alert_rules[count.index].mute_actions_after_alert_duration
+  query_time_range_override         = var.query_alert_rules[count.index].query_time_range_override
+  skip_query_validation             = var.query_alert_rules[count.index].skip_query_validation
+  target_resource_types             = var.query_alert_rules[count.index].target_resource_types
 
   # https://build5nines.com/terraform-expression-get-list-object-by-attribute-value-lookup/
   # https://dev.to/pwd9000/terraform-filter-results-using-for-loops-4n75
 
   action {
-    action_groups     = toset([for ag in azurerm_monitor_action_group.action_groups : ag.id if contains(each.value.action_group_names, ag.name)])
-    custom_properties = each.value.action_custom_properties
+    action_groups     = toset([for each in azurerm_monitor_action_group.action_groups : each.id if contains(var.query_alert_rules[count.index].action_group_names, each.name)])
+    custom_properties = var.query_alert_rules[count.index].action_custom_properties
   }
 
   criteria {
-    operator                = each.value.criteria.operator
-    query                   = each.value.criteria.query
-    threshold               = each.value.criteria.threshold
-    time_aggregation_method = each.value.criteria.time_aggregation_method
-    metric_measure_column   = each.value.criteria.metric_measure_column
-    resource_id_column      = each.value.criteria.resource_id_column
+    operator                = var.query_alert_rules[count.index].criteria.operator
+    query                   = var.query_alert_rules[count.index].criteria.query
+    threshold               = var.query_alert_rules[count.index].criteria.threshold
+    time_aggregation_method = var.query_alert_rules[count.index].criteria.time_aggregation_method
+    metric_measure_column   = var.query_alert_rules[count.index].criteria.metric_measure_column
+    resource_id_column      = var.query_alert_rules[count.index].criteria.resource_id_column
 
     dynamic "dimension" {
-      for_each = each.value.criteria.dimension[*]
+      for_each = var.query_alert_rules[count.index].criteria.dimension[*]
       content {
-        name     = each.value.criteria.dimension.name
-        operator = each.value.criteria.dimension.operator
-        values   = each.value.criteria.dimension.values
+        name     = var.query_alert_rules[count.index].criteria.dimension.name
+        operator = var.query_alert_rules[count.index].criteria.dimension.operator
+        values   = var.query_alert_rules[count.index].criteria.dimension.values
       }
     }
 
     dynamic "failing_periods" {
-      for_each = each.value.criteria.failing_periods[*]
+      for_each = var.query_alert_rules[count.index].criteria.failing_periods[*]
       content {
-        minimum_failing_periods_to_trigger_alert = each.value.criteria.failing_periods.minimum_failing_periods_to_trigger_alert
-        number_of_evaluation_periods             = each.value.criteria.failing_periods.number_of_evaluation_periods
+        minimum_failing_periods_to_trigger_alert = var.query_alert_rules[count.index].criteria.failing_periods.minimum_failing_periods_to_trigger_alert
+        number_of_evaluation_periods             = var.query_alert_rules[count.index].criteria.failing_periods.number_of_evaluation_periods
       }
     }
   }
