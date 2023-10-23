@@ -1,0 +1,21 @@
+name: Terraform Module Tests
+
+on:
+  workflow_dispatch:
+
+jobs:
+
+  terraform-module-tests:
+    uses: brianwagner777/tests-module-workflow/.github/workflows/terraform-module-tests.yaml@v1
+
+    with:
+      ARM_CLIENT_ID: a78843c5-af04-44cb-b2e9-ef98bff6926e
+      ARM_SUBSCRIPTION_ID: 973e34ce-d7eb-44d6-871e-7a34d8bb15ce
+      ARM_TENANT_ID: c8d81394-3f5d-49c8-9219-2347a6bc381b
+      CALLED_REF: "v1"
+      RESOURCE_GROUP_TO_CLEAN: "rg-alert-module-2-tests"
+      SHOW_OUTPUT: "y"
+      SKIP_DESTROY: "y"
+    
+    secrets:
+      ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
