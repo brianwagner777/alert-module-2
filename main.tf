@@ -83,65 +83,65 @@ resource "azurerm_monitor_scheduled_query_rules_alert_v2" "query_alert_rules" {
 # Create metric alert rules
 resource "azurerm_monitor_metric_alert" "metric_alert_rules" {
   for_each            = { for idx, mar in var.metric_alert_rules : mar.name => mar }
-  name                = each.value.rule.name
+  name                = each.value.name
   resource_group_name = var.resource_group_name
-  description         = each.value.rule.description
-  enabled             = each.value.rule.enabled
+  description         = each.value.description
+  enabled             = each.value.enabled
   tags                = var.tags
 
-  scopes                   = each.value.rule.scopes
-  auto_mitigate            = each.value.rule.auto_mitigate
-  frequency                = each.value.rule.frequency
-  severity                 = each.value.rule.severity
-  target_resource_type     = each.value.rule.target_resource_type
-  target_resource_location = each.value.rule.target_resource_location
-  window_size              = each.value.rule.window_size
+  scopes                   = each.value.scopes
+  auto_mitigate            = each.value.auto_mitigate
+  frequency                = each.value.frequency
+  severity                 = each.value.severity
+  target_resource_type     = each.value.target_resource_type
+  target_resource_location = each.value.target_resource_location
+  window_size              = each.value.window_size
 
   action {
     action_group_id    = one([for ag in azurerm_monitor_action_group.action_groups : ag.id if each.value.action_group_name == ag.name])
-    webhook_properties = each.value.rule.action_webhook_properties
+    webhook_properties = each.value.action_webhook_properties
   }
 
   dynamic "criteria" {
-    for_each = each.value.rule.criteria[*]
+    for_each = each.value.criteria[*]
     content {
-      metric_namespace       = each.value.rule.criteria.metric_namespace
-      metric_name            = each.value.rule.criteria.metric_name
-      aggregation            = each.value.rule.criteria.aggregation
-      operator               = each.value.rule.criteria.operator
-      threshold              = each.value.rule.criteria.threshold
-      skip_metric_validation = each.value.rule.criteria.skip_metric_validation
+      metric_namespace       = each.value.criteria.metric_namespace
+      metric_name            = each.value.criteria.metric_name
+      aggregation            = each.value.criteria.aggregation
+      operator               = each.value.criteria.operator
+      threshold              = each.value.criteria.threshold
+      skip_metric_validation = each.value.criteria.skip_metric_validation
 
       dynamic "dimension" {
-        for_each = each.value.rule.criteria.dimension[*]
+        for_each = each.value.criteria.dimension[*]
         content {
-          name     = each.value.rule.criteria.dimension.name
-          operator = each.value.rule.criteria.dimension.operator
-          values   = each.value.rule.criteria.dimension.values
+          name     = each.value.criteria.dimension.name
+          operator = each.value.criteria.dimension.operator
+          values   = each.value.criteria.dimension.values
         }
       }
     }
   }
 
   dynamic "dynamic_criteria" {
-    for_each = each.value.rule.dynamic_criteria[*]
+    for_each = each.value.dynamic_criteria[*]
     content {
-      metric_namespace         = each.value.rule.dynamic_criteria.metric_namespace
-      metric_name              = each.value.rule.dynamic_criteria.metric_name
-      aggregation              = each.value.rule.dynamic_criteria.aggregation
-      operator                 = each.value.rule.dynamic_criteria.operator
-      alert_sensitivity        = each.value.rule.dynamic_criteria.alert_sensitivity
-      evaluation_total_count   = each.value.rule.dynamic_criteria.evaluation_total_count
-      evaluation_failure_count = each.value.rule.dynamic_criteria.evaluation_failure_count
-      ignore_data_before       = each.value.rule.dynamic_criteria.ignore_data_before
-      skip_metric_validation   = each.value.rule.dynamic_criteria.skip_metric_validation
+      metric_namespace         = each.value.dynamic_criteria.metric_namespace
+      metric_name              = each.value.dynamic_criteria.metric_name
+      aggregation              = each.value.dynamic_criteria.aggregation
+      operator                 = each.value.dynamic_criteria.operator
+      alert_sensitivity        = each.value.dynamic_criteria.alert_sensitivity
+      evaluation_total_count   = each.value.dynamic_criteria.evaluation_total_count
+      evaluation_failure_count = each.value.dynamic_criteria.evaluation_failure_count
+      ignore_data_before       = each.value.dynamic_criteria.ignore_data_before
+      skip_metric_validation   = each.value.dynamic_criteria.skip_metric_validation
 
       dynamic "dimension" {
-        for_each = each.value.rule.dynamic_criteria.dimension[*]
+        for_each = each.value.dynamic_criteria.dimension[*]
         content {
-          name     = each.value.rule.dynamic_criteria.dimension.name
-          operator = each.value.rule.dynamic_criteria.dimension.operator
-          values   = each.value.rule.dynamic_criteria.dimension.values
+          name     = each.value.dynamic_criteria.dimension.name
+          operator = each.value.dynamic_criteria.dimension.operator
+          values   = each.value.dynamic_criteria.dimension.values
         }
       }
     }
