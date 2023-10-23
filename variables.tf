@@ -126,7 +126,7 @@ variable "metric_alert_rules" {
     frequency                 = string,
     severity                  = number,
     target_resource_type      = optional(string),
-    target_resource_location  = string,
+    target_resource_location  = optional(string),
     window_size               = string,
     action_group_name         = string,
     action_webhook_properties = optional(map(string)),
