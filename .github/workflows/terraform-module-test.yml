@@ -15,7 +15,7 @@ jobs:
       CALLED_REF: "v1"
       RESOURCE_GROUP_TO_CLEAN: "rg-alert-module-2-tests"
       SHOW_OUTPUT: "y"
-      SKIP_DESTROY: "y"
+      SKIP_DESTROY: "n"
     
     secrets:
       ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
