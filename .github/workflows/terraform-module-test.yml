@@ -6,7 +6,7 @@ on:
 jobs:
 
   terraform-module-tests:
-    uses: brianwagner777/terraform-module-tests-workflow/.github/workflows/terraform-module-tests.yaml@v1
+    uses: brianwagner777/terraform-module-tests-workflow/.github/workflows/terraform-module-tests.yaml@main
 
     with:
       ARM_CLIENT_ID: a78843c5-af04-44cb-b2e9-ef98bff6926e
