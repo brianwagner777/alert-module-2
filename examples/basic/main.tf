@@ -22,6 +22,10 @@ data "azurerm_resource_group" "rg_shared" {
   name = "rg-shared-dev"
 }
 
+data "azurerm_resource_group" "rg_alert_module_2_tests" {
+  name = "rg-alert-module-2-tests"
+}
+
 data "azurerm_log_analytics_workspace" "log_shared" {
   name                = "log-shared-dev"
   resource_group_name = data.azurerm_resource_group.rg_shared.name
@@ -41,8 +45,8 @@ locals {
 module "my_module" {
   source = "../.."
 
-  resource_group_name = data.azurerm_resource_group.rg_shared.name
-  location            = data.azurerm_resource_group.rg_shared.location
+  resource_group_name = data.azurerm_resource_group.rg_alert_module_2_tests.name
+  location            = data.azurerm_resource_group.rg_alert_module_2_tests.location
   tags                = {}
 
   action_groups = [
@@ -74,7 +78,7 @@ module "my_module" {
         time_aggregation_method = "Count"
         query                   = <<-QUERY
           FunctionAppLogs
-          | where _ResourceId has "${data.azurerm_resource_group.rg_shared.name}" 
+          | where _ResourceId has "${data.azurerm_resource_group.rg_alert_module_2_tests.name}" 
               and AppName == "TODO"
         QUERY
       }
