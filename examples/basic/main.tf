@@ -27,6 +27,17 @@ data "azurerm_log_analytics_workspace" "log_shared" {
   resource_group_name = data.azurerm_resource_group.rg_shared.name
 }
 
+locals {
+  email_receiver_bwagner77 = {
+    name          = "sendto-bwagner"
+    email_address = "bwagner77@live.com"
+  }
+  email_receiver_brianwagner777 = {
+    name          = "sendto-brianwagner777"
+    email_address = "brian.wagner777@outlook.com"
+  }
+}
+
 module "my_module" {
   source = "../.."
 
