@@ -32,7 +32,7 @@ module "my_module" {
 
   resource_group_name = data.azurerm_resource_group.rg_shared.name
   location            = data.azurerm_resource_group.rg_shared.location
-  tags                = local.tags
+  tags                = {}
 
   action_groups = [
     {
