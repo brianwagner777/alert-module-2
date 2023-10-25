@@ -84,4 +84,24 @@ module "my_module" {
       }
     }
   ]
+
+  metric_alert_rules = [
+    {
+      name              = "example-metric-alert-rule"
+      enabled           = false
+      frequency         = "PT1H"
+      scopes            = [data.azurerm_log_analytics_workspace.log_shared.id]
+      severity          = 4
+      window_size       = "PT1H"
+      action_group_name = "ExampleActionGroup"
+
+      criteria = {
+        metric_namespace = "Microsoft.OperationalInsights/workspaces"
+        metric_name      = "Heartbeat"
+        aggregation      = "Total"
+        operator         = "LessThan"
+        threshold        = 0
+      }
+    }
+  ]
 }
