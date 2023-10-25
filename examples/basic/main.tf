@@ -93,7 +93,7 @@ module "my_module" {
       scopes            = [data.azurerm_log_analytics_workspace.log_shared.id]
       severity          = 4
       window_size       = "PT1H"
-      action_group_name = "ExampleActionGroup"
+      action_group_name = "TestLoggingFailure"
 
       criteria = {
         metric_namespace = "Microsoft.OperationalInsights/workspaces"
