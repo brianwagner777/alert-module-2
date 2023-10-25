@@ -66,7 +66,7 @@ module "my_module" {
       scope                = data.azurerm_log_analytics_workspace.log_shared.id
       severity             = 1
       window_duration      = "P1D"
-      action_group_names   = ["IntPocLoggingFailure"]
+      action_group_names   = ["TestLoggingFailure"]
       action_custom_properties = {
         "key1" = "test1"
         "key2" = "test2"
