@@ -172,17 +172,24 @@ resource "azurerm_monitor_activity_log_alert" "activity_alert_rules" {
   dynamic "criteria" {
     for_each = each.value.criteria[*]
     content {
-      category           = each.value.criteria.category
-      caller             = each.value.criteria.caller
-      operation_name     = each.value.criteria.operation_name
-      resource_provider  = each.value.criteria.resource_provider
-      resource_providers = each.value.criteria.resource_providers
-      resource_type      = each.value.criteria.resource_type
-      resource_types     = each.value.criteria.resource_types
-      resource_id        = each.value.criteria.resource_id
-      resource_ids       = each.value.criteria.resource_ids
-      level              = each.value.criteria.level
-      levels             = each.value.criteria.levels
+      category                = each.value.criteria.category
+      caller                  = each.value.criteria.caller
+      operation_name          = each.value.criteria.operation_name
+      resource_provider       = each.value.criteria.resource_provider
+      resource_providers      = each.value.criteria.resource_providers
+      resource_type           = each.value.criteria.resource_type
+      resource_types          = each.value.criteria.resource_types
+      resource_id             = each.value.criteria.resource_id
+      resource_ids            = each.value.criteria.resource_ids
+      level                   = each.value.criteria.level
+      levels                  = each.value.criteria.levels
+      status                  = each.value.criteria.status
+      statuses                = each.value.criteria.statuses
+      sub_status              = each.value.criteria.sub_status
+      sub_statuses            = each.value.criteria.sub_statuses
+      recommendation_type     = each.value.criteria.recommendation_type
+      recommendation_category = each.value.criteria.recommendation_category
+      recommendation_impact   = each.value.criteria.recommendation_impact
 
       dynamic "resource_health" {
         for_each = each.value.criteria.resource_health[*]
