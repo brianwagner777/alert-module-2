@@ -243,7 +243,7 @@ variable "activity_alert_rules" {
       resource_health = optional(object({
         current  = optional(set(string)),
         previous = optional(set(string)),
-        reason   = optional(string)
+        reason   = optional(set(string))
       }))
 
       service_health = optional(object({
