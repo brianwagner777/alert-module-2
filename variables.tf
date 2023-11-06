@@ -233,6 +233,7 @@ variable "activity_alert_rules" {
       operation_name          = optional(string),
       resource_providers      = optional(set(string)),
       resource_types          = optional(set(string)),
+      resource_groups         = optional(set(string)),
       resource_ids            = optional(set(string)),
       levels                  = optional(set(string)),
       statuses                = optional(set(string)),
