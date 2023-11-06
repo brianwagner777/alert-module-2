@@ -177,6 +177,7 @@ resource "azurerm_monitor_activity_log_alert" "activity_alert_rules" {
       operation_name          = each.value.criteria.operation_name
       resource_providers      = each.value.criteria.resource_providers
       resource_types          = each.value.criteria.resource_types
+      resource_groups         = each.value.criteria.resource_groups
       resource_ids            = each.value.criteria.resource_ids
       levels                  = each.value.criteria.levels
       statuses                = each.value.criteria.statuses
