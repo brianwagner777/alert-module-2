@@ -217,3 +217,44 @@ variable "metric_alert_rules" {
     }
   EOT
 }
+
+variable "activity_alert_rules" {
+  type = list(object({
+    name                      = string,
+    description               = optional(string),
+    enabled                   = bool,
+    scopes                    = set(string),
+    action_group_name         = string,
+    action_webhook_properties = optional(map(string)),
+
+    criteria = optional(object({
+      category           = string,
+      caller             = optional(string),
+      operation_name     = optional(string),
+      resource_provider  = optional(string),
+      resource_providers = optional(set(string)),
+      resource_type      = optional(string),
+      resource_types     = optional(set(string)),
+      resource_id        = optional(string),
+      resource_ids       = optional(set(string)),
+      level              = optional(string),
+      levels             = optional(set(string)),
+
+      resource_health = optional(object({
+        current  = optional(set(string)),
+        previous = optional(set(string)),
+        reason   = optional(string)
+      }))
+
+      service_health = optional(object({
+        events    = optional(set(string)),
+        locations = optional(set(string)),
+        services  = optional(set(string))
+      }))
+    }))
+  }))
+
+  default     = []
+  description = <<EOT
+  EOT
+}
