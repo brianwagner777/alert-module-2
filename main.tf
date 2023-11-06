@@ -194,7 +194,7 @@ resource "azurerm_monitor_activity_log_alert" "activity_alert_rules" {
       }
 
       dynamic "service_health" {
-        for_each = each.value.criteria.resource_health[*]
+        for_each = each.value.criteria.service_health[*]
         content {
           events    = each.value.criteria.service_health.current
           locations = each.value.criteria.service_health.previous
