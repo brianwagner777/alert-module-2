@@ -153,3 +153,60 @@ resource "azurerm_monitor_metric_alert" "metric_alert_rules" {
     ]
   }
 }
+
+# Create activity alert rules
+resource "azurerm_monitor_activity_log_alert" "activity_alert_rules" {
+  for_each            = { for idx, mar in var.activity_alert_rules : mar.name => mar }
+  name                = each.value.name
+  resource_group_name = var.resource_group_name
+  description         = each.value.description
+  enabled             = each.value.enabled
+  tags                = var.tags
+  scopes              = each.value.scopes
+
+  action {
+    action_group_id    = one([for ag in azurerm_monitor_action_group.action_groups : ag.id if each.value.action_group_name == ag.name])
+    webhook_properties = each.value.action_webhook_properties
+  }
+
+  dynamic "criteria" {
+    for_each = each.value.criteria[*]
+    content {
+      category           = each.value.criteria.category
+      caller             = each.value.criteria.caller
+      operation_name     = each.value.criteria.operation_name
+      resource_provider  = each.value.criteria.resource_provider
+      resource_providers = each.value.criteria.resource_providers
+      resource_type      = each.value.criteria.resource_type
+      resource_types     = each.value.criteria.resource_types
+      resource_id        = each.value.criteria.resource_id
+      resource_ids       = each.value.criteria.resource_ids
+      level              = each.value.criteria.level
+      levels             = each.value.criteria.levels
+
+      dynamic "resource_health" {
+        for_each = each.value.criteria.resource_health[*]
+        content {
+          current  = each.value.criteria.resource_health.current
+          previous = each.value.criteria.resource_health.previous
+          reason   = each.value.criteria.resource_health.reason
+        }
+      }
+
+      dynamic "service_health" {
+        for_each = each.value.criteria.resource_health[*]
+        content {
+          events    = each.value.criteria.service_health.current
+          locations = each.value.criteria.service_health.previous
+          services  = each.value.criteria.service_health.reason
+        }
+      }
+    }
+  }
+
+  lifecycle {
+    ignore_changes = [
+      enabled
+    ]
+  }
+}
