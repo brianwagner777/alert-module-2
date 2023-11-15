@@ -14,6 +14,11 @@ variable "tags" {
   default     = {}
 }
 
+variable "temp" {
+  description = ""
+  type        = string
+}
+
 variable "action_groups" {
   type = list(object({
     name            = string,
